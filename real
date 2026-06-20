@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PreshyBee Farms Group | Premium Agriculture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: #111;
+            color: #ccc;
+            font-size: 12px;
+            padding: 8px 20px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .top-bar span {
+            color: #d4af37;
+            font-weight: 500;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        nav .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #111;
+            cursor: pointer;
+        }
+        nav .logo span {
+            font-weight: 400;
+            color: #d4af37;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        nav .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        nav .nav-links a:hover,
+        nav .nav-links a.active {
+            color: #d4af37;
+        }
+
+        nav .cta-nav {
+            background: #d4af37;
+            color: #111;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #111;
+            padding: 4px 8px;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* ===== SLIDESHOW ===== */
+        .landing-slideshow {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background: #111;
+        }
+
+        .landing-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .landing-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .landing-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 1;
+        }
+
+        .landing-slide-1 {
+            background-image: url('https://images.pexels.com/photos/162636/chickens-poultry-free-range-162636.jpeg?auto=compress&cs=tinysrgb&w=1400');
+        }
+        .landing-slide-2 {
+            background-image: url('https://images.pexels.com/photos/6937747/pexels-photo-6937747.jpeg?auto=compress&cs=tinysrgb&w=1400');
+        }
+        .landing-slide-3 {
+            background-image: url('https://images.pexels.com/photos/2132171/pexels-photo-2132171.jpeg?auto=compress&cs=tinysrgb&w=1400');
+        }
+        .landing-slide-4 {
+            background-image: url('https://images.pexels.com/photos/14463139/pexels-photo-14463139.jpeg?auto=compress&cs=tinysrgb&w=1400');
+        }
+        .landing-slide-5 {
+            background-image: url('https://images.pexels.com/photos/2252584/pexels-photo-2252584.jpeg?auto=compress&cs=tinysrgb&w=1400');
+        }
+        .landing-slide-6 {
+            background-image: url('https://images.pexels.com/photos/14424886/pexels-photo-14424886.jpeg?auto=compress&cs=tinysrgb&w=1400');
+        }
+
+        .landing-slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            max-width: 650px;
+        }
+
+        .landing-slide-content .tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .landing-slide-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            font-weight: 500;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6);
+        }
+        .landing-slide-content h1 strong {
+            font-weight: 700;
+        }
+
+        .landing-slide-content p {
+            font-size: 16px;
+            font-weight: 300;
+            color: #ddd;
+            text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 25px;
+        }
+
+        .landing-slide-content .btn-gold {
+            display: inline-block;
+            background: #d4af37;
+            color: #111;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .landing-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .landing-arrow:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+        .landing-arrow.prev {
+            left: 20px;
+        }
+        .landing-arrow.next {
+            right: 20px;
+        }
+
+        .landing-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+
+        .landing-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .landing-dot.active {
+            background: #d4af37;
+            transform: scale(1.3);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            color: white;
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+        }
+        .scroll-indicator span {
+            display: block;
+            font-size: 20px;
+            margin-top: 5px;
+        }
+
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(10px);
+            }
+        }
+
+        /* ===== INNER PAGES ===== */
+        .inner-page {
+            padding-top: 20px;
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            font-weight: 500;
+            text-align: center;
+            color: #111;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            font-weight: 300;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .divider {
+            width: 40px;
+            height: 1px;
+            background: #d4af37;
+            margin: 0 auto 35px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 50px 25px;
+        }
+
+        /* ===== SEARCH BAR ===== */
+        .search-bar {
+            text-align: center;
+            margin: -10px 0 30px;
+        }
+        .search-bar input {
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 350px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .search-bar input:focus {
+            border-color: #d4af37;
+        }
+
+        /* ===== PRODUCT GRID ===== */
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 25px 18px;
+            text-align: center;
+            width: 150px;
+            flex-grow: 1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .product-card:hover,
+        .product-card:active {
+            border-color: #d4af37;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .product-card .p-emoji {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .product-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 4px;
+        }
+        .product-card p {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .product-card .add-btn {
+            background: #d4af37;
+            color: #111;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .product-card .add-btn:hover {
+            background: #b8960f;
+        }
+
+        /* ===== PRODUCT DETAIL ===== */
+        .product-detail {
+            display: none;
+            text-align: center;
+        }
+        .product-detail.active {
+            display: block;
+        }
+
+        .product-detail .back-btn {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #d4af37;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-detail .detail-image {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin: 0 auto 25px;
+            display: block;
+            background: #eee;
+        }
+        .product-detail h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 8px;
+        }
+        .product-detail .price {
+            font-size: 18px;
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .product-detail .description {
+            font-size: 15px;
+            color: #555;
+            max-width: 500px;
+            margin: 0 auto 25px;
+            line-height: 1.8;
+        }
+        .product-detail .btn-order {
+            display: inline-block;
+            background: #d4af37;
+            color: #111;
+            text-decoration: none;
+            padding: 14px 35px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ===== FEEDBACK ===== */
+        .feedback-form {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 30px 25px;
+            max-width: 550px;
+            margin: 0 auto 30px;
+        }
+        .feedback-form label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #111;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            margin-top: 15px;
+        }
+        .feedback-form input,
+        .feedback-form select,
+        .feedback-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .feedback-form input:focus,
+        .feedback-form textarea:focus {
+            border-color: #d4af37;
+            outline: none;
+        }
+        .feedback-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .feedback-form button {
+            background: #d4af37;
+            color: #111;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 18px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .feedback-success {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #e8f5e9;
+            border-radius: 4px;
+            color: #1b5e20;
+            font-weight: 500;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .reviews-list {
+            max-width: 550px;
+            margin: 30px auto 0;
+        }
+        .review-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .review-card .stars {
+            color: #d4af37;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        .review-card .review-text {
+            font-size: 14px;
+            color: #555;
+            font-style: italic;
+            line-height: 1.7;
+        }
+        .review-card .review-author {
+            font-size: 11px;
+            font-weight: 600;
+            color: #111;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #111;
+            color: #777;
+            padding: 50px 25px 25px;
+            text-align: center;
+        }
+        footer .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 6px;
+        }
+        footer .footer-brand span {
+            font-weight: 400;
+            color: #d4af37;
+        }
+        footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        footer .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        footer .footer-links a:hover {
+            color: #d4af37;
+        }
+        footer .copyright {
+            font-size: 10px;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #111;
+            color: #d4af37;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== CART POPUP ===== */
+        .cart-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+        }
+        .cart-popup h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+        }
+        .cart-popup .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-popup .cart-item .remove {
+            cursor: pointer;
+            color: #d4af37;
+        }
+        .cart-popup .cart-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .cart-popup .cart-actions button {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            flex: 1;
+        }
+        .cart-popup .cart-actions .clear {
+            background: #f0f0f0;
+            color: #111;
+        }
+        .cart-popup .cart-actions .checkout {
+            background: #d4af37;
+            color: #111;
+        }
+        .cart-popup .cart-actions .close {
+            background: #111;
+            color: white;
+        }
+        .cart-popup .total {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .cart-count {
+            background: #d4af37;
+            color: #111;
+            border-radius: 50%;
+            padding: 1px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .hamburger {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding-top: 10px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .landing-slide-content h1 {
+                font-size: 28px;
+            }
+            .landing-slide-content p {
+                font-size: 13px;
+            }
+            .landing-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
+            }
+            nav .logo {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP BAR ===== -->
+    <div class="top-bar">
+        📍 Isolo, Lagos &nbsp;|&nbsp; 📧 preshybeefarms@gmail.com &nbsp;|&nbsp; 📞 <span>+234 807 393 8083</span>
+    </div>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav>
+        <div class="logo" onclick="showPage('home')">PreshyBee<span>Farms</span></div>
+        <button class="hamburger" id="hamburgerBtn">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a onclick="showPage('home')" class="active" id="nav-home">Home</a>
+            <a onclick="showPage('products')" id="nav-products">Products</a>
+            <a onclick="showPage('about')" id="nav-about">About</a>
+            <a onclick="showPage('feedback')" id="nav-feedback">Feedback</a>
+            <a onclick="showCartPopup()" style="color:#d4af37;">🛒 <span class="cart-count" id="cartCount">0</span></a>
+        </div>
+        <a href="https://wa.me/2348073938083" class="cta-nav">Order Now</a>
+    </nav>
+
+    <!-- ===== PAGE: HOME ===== -->
+    <div class="page active" id="page-home">
+        <div class="landing-slideshow">
+            <div class="landing-slides" id="landingSlides">
+                <div class="landing-slide landing-slide-1">
+                    <div class="landing-slide-content">
+                        <div class="tag">Poultry Division</div>
+                        <h1>Premium <strong>Eggs & Broilers</strong></h1>
+                        <p>Fresh from our farms, delivered to your doorstep daily.</p>
+                        <a href="#" onclick="showPage('products'); showProductDetail('eggs')" class="btn-gold">Explore Products</a>
+                    </div>
+                </div>
+                <div class="landing-slide landing-slide-2">
+                    <div class="landing-slide-content">
+                        <div class="tag">Livestock Division</div>
+                        <h1>Healthy <strong>Goats, Rams & Pigs</strong></h1>
+                        <p>Ethically raised. Naturally fed. Quality you can trust.</p>
+                        <a href="#" onclick="showPage('products')" class="btn-gold">View Livestock</a>
+                    </div>
+                </div>
+                <div class="landing-slide landing-slide-3">
+                    <div class="landing-slide-content">
+                        <div class="tag">Snail & Specialty</div>
+                        <h1>Premium <strong>Snail Meat</strong></h1>
+                        <p>A delicacy packed with protein. Fresh and affordable.</p>
+                        <a href="#" onclick="showPage('products'); showProductDetail('snails')" class="btn-gold">Learn More</a>
+                    </div>
+                </div>
+                <div class="landing-slide landing-slide-4">
+                    <div class="landing-slide-content">
+                        <div class="tag">Crop Division</div>
+                        <h1>Fresh <strong>Peppers & Yams</strong></h1>
+                        <p>Greenhouse-grown bell peppers and healthy yam tubers.</p>
+                        <a href="#" onclick="showPage('products')" class="btn-gold">See Crops</a>
+                    </div>
+                </div>
+                <div class="landing-slide landing-slide-5">
+                    <div class="landing-slide-content">
+                        <div class="tag">Organic Fertiliser</div>
+                        <h1>Rich <strong>Organic Manure</strong></h1>
+                        <p>Natural fertiliser for thriving gardens and farms.</p>
+                        <a href="#" onclick="showPage('products'); showProductDetail('manure')" class="btn-gold">Discover More</a>
+                    </div>
+                </div>
+                <div class="landing-slide landing-slide-6">
+                    <div class="landing-slide-content">
+                        <div class="tag">PreshyBee Farms</div>
+                        <h1>Protein for <strong>Every Table</strong></h1>
+                        <p>Making quality food accessible and affordable for all.</p>
+                        <a href="https://wa.me/2348073938083" class="btn-gold">Order on WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="landing-arrow prev" onclick="landingPrev()">❮</button>
+            <button class="landing-arrow next" onclick="landingNext()">❯</button>
+
+            <div class="landing-dots" id="landingDots">
+                <button class="landing-dot active" data-index="0"></button>
+                <button class="landing-dot" data-index="1"></button>
+                <button class="landing-dot" data-index="2"></button>
+                <button class="landing-dot" data-index="3"></button>
+                <button class="landing-dot" data-index="4"></button>
+                <button class="landing-dot" data-index="5"></button>
+            </div>
+
+            <div class="scroll-indicator" onclick="showPage('products')">
+                Explore <span>↓</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PAGE: PRODUCTS ===== -->
+    <div class="page" id="page-products">
+        <div class="container inner-page">
+            <div id="productGrid">
+                <div class="section-label">Our Products</div>
+                <h2 class="section-title">What We Grow & Raise</h2>
+                <div class="divider"></div>
+                <p class="section-subtitle">Tap any product to see details, descriptions, and order information.</p>
+
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="🔍 Search products..." />
+                </div>
+
+                <div class="product-grid" id="productGridContainer">
+                    <div class="product-card" data-name="Fresh Eggs">
+                        <div class="p-emoji">🥚</div>
+                        <h3>Fresh Eggs</h3>
+                        <p>Organic table eggs</p>
+                        <button class="add-btn" onclick="addToCart('Fresh Eggs')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Broilers">
+                        <div class="p-emoji">🍗</div>
+                        <h3>Broilers</h3>
+                        <p>Healthy meat birds</p>
+                        <button class="add-btn" onclick="addToCart('Broilers')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Turkey">
+                        <div class="p-emoji">🦃</div>
+                        <h3>Turkey</h3>
+                        <p>Holiday birds</p>
+                        <button class="add-btn" onclick="addToCart('Turkey')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Ducks">
+                        <div class="p-emoji">🦆</div>
+                        <h3>Ducks</h3>
+                        <p>Flavourful meat</p>
+                        <button class="add-btn" onclick="addToCart('Ducks')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Organic Manure">
+                        <div class="p-emoji">🌿</div>
+                        <h3>Organic Manure</h3>
+                        <p>Natural fertiliser</p>
+                        <button class="add-btn" onclick="addToCart('Organic Manure')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Snails">
+                        <div class="p-emoji">🐌</div>
+                        <h3>Snails</h3>
+                        <p>Premium meat</p>
+                        <button class="add-btn" onclick="addToCart('Snails')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Goats & Rams">
+                        <div class="p-emoji">🐐</div>
+                        <h3>Goats & Rams</h3>
+                        <p>Livestock</p>
+                        <button class="add-btn" onclick="addToCart('Goats & Rams')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Pigs">
+                        <div class="p-emoji">🐖</div>
+                        <h3>Pigs</h3>
+                        <p>Quality pork</p>
+                        <button class="add-btn" onclick="addToCart('Pigs')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Bell Peppers">
+                        <div class="p-emoji">🌶️</div>
+                        <h3>Bell Peppers</h3>
+                        <p>Greenhouse fresh</p>
+                        <button class="add-btn" onclick="addToCart('Bell Peppers')">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Yams">
+                        <div class="p-emoji">🍠</div>
+                        <h3>Yams</h3>
+                        <p>Healthy tubers</p>
+                        <button class="add-btn" onclick="addToCart('Yams')">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="product-detail" id="detail-eggs">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/162636/chickens-poultry-free-range-162636.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Fresh Eggs" />
+                <h2>Fresh Eggs</h2>
+                <div class="price">From ₦3,500 per crate</div>
+                <p class="description">Our free-range hens produce rich, organic eggs daily. Packed with protein and essential nutrients.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Order Eggs Now</a>
+            </div>
+
+            <div class="product-detail" id="detail-broilers">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/6937747/pexels-photo-6937747.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Broilers" />
+                <h2>Broilers</h2>
+                <div class="price">Enquire for pricing</div>
+                <p class="description">Healthy, well-fed broilers raised in clean, spacious environments.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Order Broilers Now</a>
+            </div>
+
+            <div class="product-detail" id="detail-turkey">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/2252584/pexels-photo-2252584.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Turkey" />
+                <h2>Turkey</h2>
+                <div class="price">Seasonal pricing</div>
+                <p class="description">Premium holiday turkeys raised with care.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Reserve Turkey</a>
+            </div>
+
+            <div class="product-detail" id="detail-ducks">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/14424886/pexels-photo-14424886.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Ducks" />
+                <h2>Ducks</h2>
+                <div class="price">Enquire for pricing</div>
+                <p class="description">Flavourful duck meat, rich and tender.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Order Ducks Now</a>
+            </div>
+
+            <div class="product-detail" id="detail-manure">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/14463139/pexels-photo-14463139.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Organic Manure" />
+                <h2>Organic Manure</h2>
+                <div class="price">From ₦2,000 per bag</div>
+                <p class="description">100% natural fertiliser from our poultry and livestock.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Order Manure Now</a>
+            </div>
+
+            <div class="product-detail" id="detail-snails">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/2132171/pexels-photo-2132171.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Snails" />
+                <h2>Premium Snails</h2>
+                <div class="price">Enquire for pricing</div>
+                <p class="description">Tender, protein-rich snail meat — a delicacy.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Order Snails Now</a>
+            </div>
+
+            <div class="product-detail" id="detail-goats">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/6937747/pexels-photo-6937747.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Goats" />
+                <h2>Goats & Rams</h2>
+                <div class="price">Enquire for pricing</div>
+                <p class="description">Healthy, well-bred goats and rams for ceremonies and celebrations.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Enquire Now</a>
+            </div>
+
+            <div class="product-detail" id="detail-pigs">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/14463139/pexels-photo-14463139.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pigs" />
+                <h2>Pigs</h2>
+                <div class="price">Enquire for pricing</div>
+                <p class="description">Quality pork from well-fed pigs raised in hygienic conditions.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Enquire Now</a>
+            </div>
+
+            <div class="product-detail" id="detail-peppers">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/14424886/pexels-photo-14424886.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Bell Peppers" />
+                <h2>Bell Peppers</h2>
+                <div class="price">Seasonal pricing</div>
+                <p class="description">Vibrant, greenhouse-grown bell peppers. Fresh, crisp, and bursting with flavour.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Order Peppers Now</a>
+            </div>
+
+            <div class="product-detail" id="detail-yams">
+                <span class="back-btn" onclick="backToProducts()">← Back to Products</span>
+                <img class="detail-image" src="https://images.pexels.com/photos/14463139/pexels-photo-14463139.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Yams" />
+                <h2>Yams</h2>
+                <div class="price">Enquire for pricing</div>
+                <p class="description">Wholesome yam tubers grown in rich, fertile soil.</p>
+                <a href="https://wa.me/2348073938083" class="btn-order">Order Yams Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PAGE: ABOUT ===== -->
+    <div class="page" id="page-about">
+        <div class="container inner-page">
+            <div class="section-label">Who We Are</div>
+            <h2 class="section-title">Feeding Families. Supporting Communities.</h2>
+            <div class="divider"></div>
+            <p class="section-subtitle">
+                PreshyBee Farms Group is a Lagos-based integrated agribusiness. From our poultry houses to snail pens,
+                goat paddocks to pepper greenhouses — every product leaves our farm with a promise:
+                uncompromising quality at prices that respect your pocket.
+            </p>
+            <p class="section-subtitle">
+                Our mission is simple: to make protein and fresh food available for the common masses.
+                We believe that good nutrition should not be a luxury — it should be accessible to every Nigerian household.
+            </p>
+            <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:30px;">
+                <div style="background:#111; color:white; padding:20px; border-radius:4px; text-align:center; min-width:120px; flex:1;">
+                    <div style="font-family:'Playfair Display',serif; font-size:32px; color:#d4af37; font-weight:500;">500+</div>
+                    <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:#aaa;">Birds & Livestock</div>
+                </div>
+                <div style="background:#111; color:white; padding:20px; border-radius:4px; text-align:center; min-width:120px; flex:1;">
+                    <div style="font-family:'Playfair Display',serif; font-size:32px; color:#d4af37; font-weight:500;">50+</div>
+                    <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:#aaa;">Happy Customers</div>
+                </div>
+                <div style="background:#111; color:white; padding:20px; border-radius:4px; text-align:center; min-width:120px; flex:1;">
+                    <div style="font-family:'Playfair Display',serif; font-size:32px; color:#d4af37; font-weight:500;">10</div>
+                    <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:#aaa;">Farm Divisions</div>
+                </div>
+                <div style="background:#111; color:white; padding:20px; border-radius:4px; text-align:center; min-width:120px; flex:1;">
+                    <div style="font-family:'Playfair Display',serif; font-size:32px; color:#d4af37; font-weight:500;">100%</div>
+                    <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:#aaa;">Organic Quality</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PAGE: FEEDBACK ===== -->
+    <div class="page" id="page-feedback">
+        <div class="container inner-page">
+            <div class="section-label">Feedback</div>
+            <h2 class="section-title">We Value Your Opinion</h2>
+            <div class="divider"></div>
+            <p class="section-subtitle">Tell us about your experience with PreshyBee Farms. Your feedback helps us serve you better.</p>
+
+            <div class="feedback-form" id="feedbackForm">
+                <label>Your Name</label>
+                <input type="text" id="fbName" placeholder="Enter your full name" />
+
+                <label>Product Purchased</label>
+                <select id="fbProduct">
+                    <option value="">Select a product...</option>
+                    <option>Fresh Eggs</option><option>Broilers</option><option>Turkey</option>
+                    <option>Ducks</option><option>Organic Manure</option><option>Snails</option>
+                    <option>Goats & Rams</option><option>Pigs</option><option>Bell Peppers</option><option>Yams</option>
+                </select>
+
+                <label>Rating</label>
+                <select id="fbRating">
+                    <option value="">Select rating...</option>
+                    <option>⭐⭐⭐⭐⭐ (Excellent)</option><option>⭐⭐⭐⭐ (Very Good)</option>
+                    <option>⭐⭐⭐ (Good)</option><option>⭐⭐ (Fair)</option><option>⭐ (Poor)</option>
+                </select>
+
+                <label>Your Review</label>
+                <textarea id="fbMessage" placeholder="Share your experience with us..."></textarea>
+
+                <button onclick="submitFeedback()">Submit Feedback</button>
+            </div>
+
+            <div class="feedback-success" id="feedbackSuccess">
+                ✅ Thank you for your feedback! We truly appreciate you taking the time to share your experience.
+            </div>
+
+            <div class="reviews-list">
+                <h3 style="font-family:'Playfair Display',serif; text-align:center; margin-bottom:20px; color:#111;">Recent Reviews</h3>
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="review-text">"The freshest eggs I've ever purchased. My family notices the difference."</p>
+                    <div class="review-author">Mrs. Adeola — Isolo</div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="review-text">"As a chef, ingredient quality is everything. Their broilers are consistently excellent."</p>
+                    <div class="review-author">Chef Emeka — Mushin</div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="review-text">"I used their organic manure on my vegetable garden and the results were remarkable."</p>
+                    <div class="review-author">Mr. Bello — Oshodi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-brand">PreshyBee<span>Farms</span></div>
+        <p>Premium Agriculture. Affordable Protein.</p>
+        <div class="footer-links">
+            <a onclick="showPage('home')">Home</a>
+            <a onclick="showPage('products')">Products</a>
+            <a onclick="showPage('about')">About</a>
+            <a onclick="showPage('feedback')">Feedback</a>
+        </div>
+        <p>📍 Isolo, Lagos, Nigeria &nbsp;|&nbsp; 📧 preshybeefarms@gmail.com &nbsp;|&nbsp; 📞 +234 807 393 8083</p>
+        <p class="copyright">&copy; 2026 PreshyBee Farms Group. All Rights Reserved.</p>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ============================================================
+        // ===== SLIDESHOW =====
+        // ============================================================
+        var landingSlides = document.getElementById('landingSlides');
+        var landingDots = document.querySelectorAll('.landing-dot');
+        var currentLanding = 0;
+        var totalLanding = 6;
+        var landingInterval;
+
+        function updateLanding(index) {
+            landingSlides.style.transform = 'translateX(-' + (index * 100) + '%)';
+            landingDots.forEach(function(dot, i) {
+                dot.classList.toggle('active', i === index);
+            });
+            currentLanding = index;
+        }
+
+        function landingNext() {
+            updateLanding((currentLanding + 1) % totalLanding);
+            resetLandingTimer();
+        }
+
+        function landingPrev() {
+            updateLanding((currentLanding - 1 + totalLanding) % totalLanding);
+            resetLandingTimer();
+        }
+
+        function resetLandingTimer() {
+            clearInterval(landingInterval);
+            landingInterval = setInterval(landingNext, 6000);
+        }
+
+        landingDots.forEach(function(dot) {
+            dot.addEventListener('click', function() {
+                updateLanding(parseInt(this.getAttribute('data-index')));
+                resetLandingTimer();
+            });
+        });
+
+        landingInterval = setInterval(landingNext, 6000);
+
+        // ============================================================
+        // ===== PAGE NAVIGATION =====
+        // ============================================================
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(function(p) {
+                p.classList.remove('active');
+            });
+            var target = document.getElementById('page-' + pageName);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.nav-links a').forEach(function(a) {
+                a.classList.remove('active');
+            });
+            var navLink = document.getElementById('nav-' + pageName);
+            if (navLink) navLink.classList.add('active');
+
+            if (pageName === 'products') backToProducts();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================================
+        // ===== PRODUCT DETAIL =====
+        // ============================================================
+        function showProductDetail(productId) {
+            var grid = document.getElementById('productGrid');
+            if (grid) grid.style.display = 'none';
+
+            document.querySelectorAll('.product-detail').forEach(function(d) {
+                d.classList.remove('active');
+            });
+            var detail = document.getElementById('detail-' + productId);
+            if (detail) detail.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function backToProducts() {
+            var grid = document.getElementById('productGrid');
+            if (grid) grid.style.display = 'block';
+
+            document.querySelectorAll('.product-detail').forEach(function(d) {
+                d.classList.remove('active');
+            });
+        }
+
+        // ============================================================
+        // ===== SEARCH =====
+        // ============================================================
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                var term = this.value.toLowerCase();
+                var cards = document.querySelectorAll('.product-card');
+                cards.forEach(function(card) {
+                    var name = card.getAttribute('data-name') || '';
+                    card.style.display = name.toLowerCase().includes(term) ? '' : 'none';
+                });
+            });
+        }
+
+        // ============================================================
+        // ===== CART =====
+        // ============================================================
+        var cart = [];
+
+        function addToCart(item) {
+            cart.push(item);
+            updateCartCount();
+            showNotification(item + ' added to cart! 🛒');
+            saveCart();
+        }
+
+        function updateCartCount() {
+            var countEl = document.getElementById('cartCount');
+            if (countEl) countEl.textContent = cart.length;
+        }
+
+        function showNotification(msg) {
+            var div = document.createElement('div');
+            div.className = 'notification';
+            div.textContent = msg;
+            document.body.appendChild(div);
+            setTimeout(function() { div.remove(); }, 3000);
+        }
+
+        function showCartPopup() {
+            if (cart.length === 0) {
+                showNotification('Your cart is empty 🛒');
+                return;
+            }
+
+            var existing = document.getElementById('cartPopup');
+            if (existing) existing.remove();
+
+            var popup = document.createElement('div');
+            popup.id = 'cartPopup';
+            popup.className = 'cart-popup';
+
+            var itemsHtml = '';
+            cart.forEach(function(item, index) {
+                itemsHtml += '<div class="cart-item"><span>' + item + '</span><span class="remove" onclick="removeFromCart(' +
+                    index + ')">✕</span></div>';
+            });
+
+            popup.innerHTML = `
+                <h3>Your Cart 🛒</h3>
+                <div style="max-height:300px; overflow-y:auto;">${itemsHtml}</div>
+                <div class="cart-actions">
+                    <button class="clear" onclick="clearCart()">Clear All</button>
+                    <button class="checkout" onclick="checkout()">Checkout</button>
+                    <button class="close" onclick="closeCartPopup()">Close</button>
+                </div>
+                <div class="total">Total items: ${cart.length}</div>
+            `;
+
+            document.body.appendChild(popup);
+        }
+
+        function closeCartPopup() {
+            var popup = document.getElementById('cartPopup');
+            if (popup) popup.remove();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            saveCart();
+            showCartPopup();
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartCount();
+            saveCart();
+            closeCartPopup();
+            showNotification('Cart cleared 🗑️');
+        }
+
+        function checkout() {
+            closeCartPopup();
+            var items = cart.join(', ');
+            var msg = 'Hello PreshyBee Farms! I\'d like to order: ' + items + '. Please provide pricing and delivery options.';
+            window.location.href = 'https://wa.me/2348073938083?text=' + encodeURIComponent(msg);
+        }
+
+        function saveCart() {
+            localStorage.setItem('preshybeecart', JSON.stringify(cart));
+        }
+
+        function loadCart() {
+            var saved = localStorage.getItem('preshybeecart');
+            if (saved) {
+                cart = JSON.parse(saved);
+                updateCartCount();
+            }
+        }
+
+        loadCart();
+
+        // ============================================================
+        // ===== MOBILE MENU =====
+        // ============================================================
+        var hamburgerBtn = document.getElementById('hamburgerBtn');
+        var navLinks = document.getElementById('navLinks');
+
+        if (hamburgerBtn && navLinks) {
+            hamburgerBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('open');
+            });
+        }
+
+        // ============================================================
+        // ===== FEEDBACK =====
+        // ============================================================
+        function submitFeedback() {
+            var name = document.getElementById('fbName').value;
+            var message = document.getElementById('fbMessage').value;
+
+            if (!name || !message) {
+                alert('Please fill in your name and review message.');
+                return;
+            }
+
+            document.getElementById('feedbackForm').style.display = 'none';
+            document.getElementById('feedbackSuccess').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
