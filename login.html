@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - PreshyBee Farms</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .auth-container {
+            max-width: 480px;
+            margin: 60px auto;
+            padding: 40px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .auth-container h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .auth-container .subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border 0.2s;
+            box-sizing: border-box;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2d7d2d;
+            outline: none;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: #2d7d2d;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: #1e5e1e;
+        }
+        .btn-primary:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+        .auth-toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .auth-toggle a {
+            color: #2d7d2d;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .role-selector {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .role-selector label {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: normal;
+        }
+        .role-selector input[type="radio"] {
+            display: none;
+        }
+        .role-selector input[type="radio"]:checked+label {
+            border-color: #2d7d2d;
+            background: #f0f7f0;
+        }
+        .role-selector label:hover {
+            border-color: #2d7d2d;
+        }
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .success-message {
+            background: #efe;
+            color: #060;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: #1a3a1a;
+            color: #fff;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">🐝 PreshyBee Farms</a>
+        <div>
+            <a href="/products.html">Shop</a>
+            <a href="/cart.html">Cart</a>
+            <a href="/login.html">Login</a>
+        </div>
+    </nav>
+
+    <div class="auth-container" id="authContainer">
+        <!-- Login Form -->
+        <div id="loginForm">
+            <h1>Welcome Back 👋</h1>
+            <p class="subtitle">Login to your PreshyBee account</p>
+            <div id="loginError" class="error-message"></div>
+            <form id="loginFormElement">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required placeholder="you@example.com" />
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••" />
+                </div>
+                <button type="submit" class="btn-primary" id="loginBtn">Login</button>
+            </form>
+            <div class="auth-toggle">
+                Don't have an account? <a id="showSignup">Sign up here</a>
+            </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupForm" style="display: none;">
+            <h1>Join PreshyBee 🐝</h1>
+            <p class="subtitle">Create your account to shop or donate</p>
+            <div id="signupError" class="error-message"></div>
+            <div id="signupSuccess" class="success-message"></div>
+            <form id="signupFormElement">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required placeholder="Chidi Okonkwo" />
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" required placeholder="you@example.com" />
+                </div>
+                <div class="form-group">
+                    <label for="signupPhone">Phone Number</label>
+                    <input type="tel" id="signupPhone" required placeholder="080 1234 5678" />
+                </div>
+                <div class="form-group">
+                    <label for="signupAddress">Delivery Address</label>
+                    <textarea id="signupAddress" rows="2" placeholder="123 Street, Lagos"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required placeholder="•••••••• (min 6 characters)" />
+                </div>
+                <div class="form-group">
+                    <label>I want to:</label>
+                    <div class="role-selector">
+                        <input type="radio" name="role" id="roleCustomer" value="customer" />
+                        <label for="roleCustomer">🛒 Shop Products</label>
+                        <input type="radio" name="role" id="roleDonor" value="donor" />
+                        <label for="roleDonor">🎁 Donate & Gift</label>
+                        <input type="radio" name="role" id="roleBoth" value="both" checked />
+                        <label for="roleBoth">🌟 Do Both!</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" id="signupBtn">Create Account</button>
+            </form>
+            <div class="auth-toggle">
+                Already have an account? <a id="showLogin">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // ============================================
+        // TOGGLE BETWEEN LOGIN AND SIGNUP
+        // ============================================
+        document.getElementById('showSignup').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+            // Clear any previous errors
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('signupError').style.display = 'none';
+            document.getElementById('signupSuccess').style.display = 'none';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            // Clear any previous errors
+            document.getElementById('signupError').style.display = 'none';
+            document.getElementById('signupSuccess').style.display = 'none';
+            document.getElementById('loginError').style.display = 'none';
+        });
+
+        // ============================================
+        // LOGIN HANDLER
+        // ============================================
+        document.getElementById('loginFormElement').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            const loginBtn = document.getElementById('loginBtn');
+
+            errorDiv.style.display = 'none';
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+
+            if (!email || !password) {
+                errorDiv.textContent = 'Please enter both email and password.';
+                errorDiv.style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+                return;
+            }
+
+            const result = await login(email, password);
+
+            if (result.success) {
+                window.location.href = '/dashboard/';
+            } else {
+                errorDiv.textContent = result.error || 'Login failed. Please try again.';
+                errorDiv.style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+        });
+
+        // ============================================
+        // SIGNUP HANDLER
+        // ============================================
+        document.getElementById('signupFormElement').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
+            const address = document.getElementById('signupAddress').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const role = document.querySelector('input[name="role"]:checked')?.value || 'both';
+
+            const errorDiv = document.getElementById('signupError');
+            const successDiv = document.getElementById('signupSuccess');
+            const signupBtn = document.getElementById('signupBtn');
+
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            signupBtn.disabled = true;
+            signupBtn.textContent = 'Creating account...';
+
+            // Validation
+            if (!name || !email || !phone || !address || !password) {
+                errorDiv.textContent = 'Please fill in all required fields.';
+                errorDiv.style.display = 'block';
+                signupBtn.disabled = false;
+                signupBtn.textContent = 'Create Account';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorDiv.textContent = 'Password must be at least 6 characters.';
+                errorDiv.style.display = 'block';
+                signupBtn.disabled = false;
+                signupBtn.textContent = 'Create Account';
+                return;
+            }
+
+            const result = await signUp(email, password, name, phone, address, role);
+
+            if (result.success) {
+                successDiv.textContent = '🎉 Account created! Please check your email to confirm.';
+                successDiv.style.display = 'block';
+                signupBtn.textContent = 'Account Created!';
+                // Don't re-enable the button — prevent duplicate submissions
+            } else {
+                errorDiv.textContent = result.error || 'Signup failed. Please try again.';
+                errorDiv.style.display = 'block';
+                signupBtn.disabled = false;
+                signupBtn.textContent = 'Create Account';
+            }
+        });
+
+        // ============================================
+        // ENTER KEY SUPPORT: Pressing Enter submits the form
+        // ============================================
+        document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginFormElement').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        document.getElementById('signupPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('signupFormElement').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
