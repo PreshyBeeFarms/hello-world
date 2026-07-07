@@ -78,10 +78,6 @@
         .checkout-btn:hover {
             background: #1e5e1e;
         }
-        .checkout-btn:disabled {
-            background: #aaa;
-            cursor: not-allowed;
-        }
         .empty-cart {
             text-align: center;
             padding: 60px 20px;
@@ -149,15 +145,16 @@
 
     <div id="toast"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="js/supabase-client.js"></script>
-    <script src="js/cart.js"></script>
     <script>
-        async function loadCart() {
-            const container = document.getElementById('cartContent');
-            const items = await getCartItems();
+        // ===== CART USING LOCALSTORAGE =====
+        var cart = JSON.parse(localStorage.getItem('preshybeecart')) || [];
 
-            if (!items || items.length === 0) {
+        function updateCartDisplay() {
+            var container = document.getElementById('cartContent');
+            var countEl = document.getElementById('cartCount');
+            if (countEl) countEl.textContent = cart.length;
+
+            if (cart.length === 0) {
                 container.innerHTML = `
                     <div class="empty-cart">
                         <div class="emoji">🛒</div>
@@ -168,101 +165,75 @@
                 return;
             }
 
-            let html = `
+            // Count items
+            var items = {};
+            cart.forEach(function(item) {
+                items[item] = (items[item] || 0) + 1;
+            });
+
+            var html = `
                 <table class="cart-table">
                     <thead>
                         <tr>
                             <th>Product</th>
-                            <th>Price</th>
                             <th>Quantity</th>
-                            <th>Total</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
-
-            let grandTotal = 0;
-
-            items.forEach(item => {
-                const product = item.products;
-                const price = product ? Number(product.price) : 0;
-                const subtotal = price * item.quantity;
-                grandTotal += subtotal;
-                const productName = product ? product.name : 'Unknown';
-                const unit = product ? product.unit : '';
-
+            var total = 0;
+            for (var name in items) {
+                var qty = items[name];
+                total += qty;
                 html += `
                     <tr>
-                        <td><strong>${productName}</strong> <span style="color:#888;font-size:14px;">(${unit})</span></td>
-                        <td>₦${price.toLocaleString()}</td>
-                        <td>
-                            <button class="quantity-btn" onclick="updateQty('${item.id}', ${item.quantity - 1})">−</button>
-                            <span style="margin:0 12px;font-weight:700;">${item.quantity}</span>
-                            <button class="quantity-btn" onclick="updateQty('${item.id}', ${item.quantity + 1})">+</button>
-                        </td>
-                        <td>₦${subtotal.toLocaleString()}</td>
-                        <td><button class="remove-btn" onclick="removeItem('${item.id}')">Remove</button></td>
+                        <td><strong>${name}</strong></td>
+                        <td>${qty}</td>
+                        <td><button class="remove-btn" onclick="removeItem('${name}')">Remove</button></td>
                     </tr>
                 `;
-            });
-
+            }
             html += `
                     </tbody>
                 </table>
                 <div class="cart-total">
-                    Total: ₦${grandTotal.toLocaleString()}
+                    Total items: ${total}
                 </div>
                 <div style="text-align:right;">
-                    <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
                 </div>
             `;
-
             container.innerHTML = html;
-            updateCartCount();
         }
 
-        // Update quantity
-        window.updateQty = async function(cartId, newQty) {
-            if (newQty < 1) {
-                await removeItem(cartId);
+        function removeItem(name) {
+            var index = cart.indexOf(name);
+            if (index !== -1) cart.splice(index, 1);
+            localStorage.setItem('preshybeecart', JSON.stringify(cart));
+            updateCartDisplay();
+            showToast('Removed ' + name + ' from cart');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!');
                 return;
             }
-            const success = await updateCartItemQuantity(cartId, newQty);
-            if (success) loadCart();
-        };
-
-        // Remove item
-        window.removeItem = async function(cartId) {
-            const success = await removeCartItem(cartId);
-            if (success) {
-                showToast('Item removed from cart');
-                loadCart();
-            }
-        };
-
-        // Checkout (placeholder)
-        document.addEventListener('click', function(e) {
-            if (e.target.id === 'checkoutBtn') {
-                showToast('Checkout coming soon! 🚀');
-            }
-        });
-
-        // Toast
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+            var items = cart.join(', ');
+            var msg = 'Hello PreshyBee Farms! I\'d like to order: ' + items + '. Please provide pricing and delivery options.';
+            window.location.href = 'https://wa.me/2348073938083?text=' + encodeURIComponent(msg);
         }
 
-        async function updateCartCount() {
-            const count = await getCartCount();
-            document.getElementById('cartCount').textContent = count;
+        function showToast(message) {
+            var toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(function() { toast.style.display = 'none'; }, 3000);
         }
 
         // Load cart on page load
-        loadCart();
+        updateCartDisplay();
     </script>
 </body>
 </html>
