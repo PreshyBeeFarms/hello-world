@@ -17,8 +17,8 @@
         nav .nav-links a { text-decoration: none; color: #555; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.3s; text-transform: uppercase; cursor: pointer; }
         nav .nav-links a:hover, nav .nav-links a.active { color: #d4af37; }
         nav .cta-nav { background: #d4af37; color: #111; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; transition: all 0.3s; }
-        .hero { position: relative; background: linear-gradient(135deg, #0f1a0f 0%, #1a3a1a 40%, #2d5a2d 100%); padding: 80px 20px; text-align: center; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.pexels.com/photos/162636/chickens-poultry-free-range-162636.jpeg?auto=compress&cs=tinysrgb&w=1400') center/cover no-repeat; opacity: 0.15; }
+        .hero { position: relative; background: linear-gradient(135deg, #0f1a0f 0%, #1a3a1a 40%, #2d5a2d 100%); padding: 80px 20px 60px; text-align: center; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.pexels.com/photos/162636/chickens-poultry-free-range-162636.jpeg?auto=compress&cs=tinysrgb&w=1400') center/cover no-repeat; opacity: 0.12; }
         .hero-content { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
         .hero .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600; margin-bottom: 15px; }
         .hero h1 { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 500; color: #fff; letter-spacing: -1px; margin-bottom: 15px; }
@@ -160,7 +160,7 @@
                 <input type="text" id="recipientLocation" placeholder="e.g. Isolo, Lagos" required />
                 <label>Your Message (Optional)</label>
                 <textarea id="message" rows="3" placeholder="Write a personal message to the recipient..."></textarea>
-                <button type="submit" class="btn-submit">🎁 Sponsor Now</button>
+                <button type="submit" class="btn-submit" id="submitBtn">🎁 Sponsor Now</button>
             </form>
             <div id="formMessage"></div>
         </div>
@@ -192,6 +192,7 @@
 
     <script src="js/backendless-client.js"></script>
     <script>
+        // ===== SELECT ANIMAL =====
         function selectAnimal(animal) {
             var select = document.getElementById('animalType');
             for (var i = 0; i < select.options.length; i++) {
@@ -204,8 +205,38 @@
             showToast('✅ ' + animal + ' selected! Complete the form below.');
         }
 
+        // ===== SHOW TOAST =====
+        function showToast(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.display = 'block';
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(function() { t.style.display = 'none'; }, 4000);
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats(quantity) {
+            var stats = JSON.parse(localStorage.getItem('sponsorStats')) || { animals: 0, families: 0, donors: 0 };
+            stats.animals += quantity || 1;
+            stats.families += 1;
+            stats.donors += 1;
+            localStorage.setItem('sponsorStats', JSON.stringify(stats));
+            displayStats(stats);
+        }
+
+        function displayStats(stats) {
+            document.getElementById('statAnimals').textContent = stats.animals || 0;
+            document.getElementById('statFamilies').textContent = stats.families || 0;
+            document.getElementById('statDonors').textContent = stats.donors || 0;
+        }
+
+        var savedStats = JSON.parse(localStorage.getItem('sponsorStats'));
+        if (savedStats) displayStats(savedStats);
+
+        // ===== SUBMIT FORM =====
         document.getElementById('sponsorForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+
             var donorName = document.getElementById('donorName').value.trim();
             var donorEmail = document.getElementById('donorEmail').value.trim();
             var animalType = document.getElementById('animalType').value;
@@ -213,11 +244,15 @@
             var recipientName = document.getElementById('recipientName').value.trim();
             var recipientLocation = document.getElementById('recipientLocation').value.trim();
             var message = document.getElementById('message').value.trim();
+            var submitBtn = document.getElementById('submitBtn');
 
             if (!donorName || !donorEmail || !animalType || !recipientName || !recipientLocation) {
                 showToast('Please fill in all required fields.');
                 return;
             }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
 
             var data = {
                 donor_name: donorName,
@@ -236,32 +271,13 @@
                 var msg = document.getElementById('formMessage');
                 msg.innerHTML = '🎉 <strong>Thank you, ' + donorName + '!</strong><br>Your sponsorship of <strong>' + quantity + ' ' + animalType + '(s)</strong> has been recorded.<br>We will deliver to <strong>' + recipientName + '</strong> at <strong>' + recipientLocation + '</strong>.<br><br>🙏 God bless you for your generosity this Christmas!';
                 msg.style.display = 'block';
-                var stats = JSON.parse(localStorage.getItem('sponsorStats')) || { animals: 0, families: 0, donors: 0 };
-                stats.animals += quantity;
-                stats.families += 1;
-                stats.donors += 1;
-                localStorage.setItem('sponsorStats', JSON.stringify(stats));
-                displayStats(stats);
+                updateStats(quantity);
             } catch (error) {
                 showToast('Error: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🎁 Sponsor Now';
             }
         });
-
-        function showToast(msg) {
-            var t = document.getElementById('toast');
-            t.textContent = msg;
-            t.style.display = 'block';
-            setTimeout(function() { t.style.display = 'none'; }, 4000);
-        }
-
-        function displayStats(stats) {
-            document.getElementById('statAnimals').textContent = stats.animals || 0;
-            document.getElementById('statFamilies').textContent = stats.families || 0;
-            document.getElementById('statDonors').textContent = stats.donors || 0;
-        }
-
-        var savedStats = JSON.parse(localStorage.getItem('sponsorStats'));
-        if (savedStats) displayStats(savedStats);
     </script>
 </body>
 </html>
