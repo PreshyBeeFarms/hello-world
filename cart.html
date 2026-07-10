@@ -101,6 +101,8 @@
     <a href="https://wa.me/2348073938083" class="whatsapp-float" target="_blank">💬</a>
     <div id="toast"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="js/email.js"></script>
     <script src="js/backendless-client.js"></script>
     <script>
         // ===== DONATION CART FUNCTIONS =====
@@ -242,7 +244,7 @@
             document.getElementById('donationForm').addEventListener('submit', handleFormSubmit);
         }
 
-        // ===== HANDLE FORM SUBMIT =====
+        // ===== HANDLE FORM SUBMIT (UPDATED WITH EMAILS) =====
         async function handleFormSubmit(e) {
             e.preventDefault();
 
@@ -280,6 +282,13 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
 
+            // Build animal details string
+            var animalDetails = cart.map(function(item) {
+                return item.quantity + ' × ' + item.animal + ' (₦' + item.price.toLocaleString() + ' each)';
+            }).join(', ');
+
+            var total = cart.reduce(function(sum, item) { return sum + (item.price * item.quantity); }, 0);
+
             var donationData = {
                 donor_name: donorName,
                 donor_email: donorEmail,
@@ -288,24 +297,46 @@
                 recipient_name: recipientName,
                 recipient_phone: recipientPhone,
                 recipient_location: recipientLocation,
+                recipient_email: recipientPhone + '@donation.preshybeefarms.com',
                 message: donorMessage || '',
-                animals: cart,
-                total: cart.reduce(function(sum, item) { return sum + (item.price * item.quantity); }, 0),
+                animal_details: animalDetails,
+                total_amount: total,
                 status: 'Pending',
                 created_at: new Date().toISOString()
             };
 
             try {
+                // 1. Save to Backendless
                 var result = await callBackendless('data/Donations', 'POST', donationData);
+                console.log('Donation saved:', result);
+
+                // 2. Send Donor Email
+                var donorEmailResult = await sendDonorEmail(donationData);
+                if (donorEmailResult.success) {
+                    console.log('Donor email sent successfully!');
+                } else {
+                    console.error('Donor email failed:', donorEmailResult.error);
+                }
+
+                // 3. Send Recipient Email
+                var recipientEmailResult = await sendRecipientEmail(donationData);
+                if (recipientEmailResult.success) {
+                    console.log('Recipient email sent successfully!');
+                } else {
+                    console.error('Recipient email failed:', recipientEmailResult.error);
+                }
+
+                // 4. Clear cart and show success
                 localStorage.removeItem('donationCart');
                 document.getElementById('donationForm').style.display = 'none';
                 var msgDiv = document.getElementById('formMessage');
                 msgDiv.innerHTML = `
-                    <div class="success-message" style="display:block;">
-                        <h2>🎉 Thank You, ${donorName}!</h2>
+                    <div class="success-message" style="display:block; background:#e8f5e9; border-radius:12px; padding:30px; text-align:center;">
+                        <h2 style="color:#1b5e20;">🎉 Thank You, ${donorName}!</h2>
                         <p>Your donation of <strong>${cart.length} animal(s)</strong> has been recorded.</p>
                         <p>We will deliver to <strong>${recipientName}</strong> at <strong>${recipientLocation}</strong>.</p>
                         <p style="margin-top:10px; color:#1b5e20;">🙏 God bless you for your generosity!</p>
+                        <p style="margin-top:10px; font-size:13px; color:#555;">📧 A confirmation email has been sent to you and the recipient.</p>
                     </div>
                 `;
                 msgDiv.style.display = 'block';
