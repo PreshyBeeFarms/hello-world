@@ -1,6 +1,6 @@
 // js/backendless-client.js
-const APP_ID = 'D40D4235-0F8F-43E0-92AC-93E04D6D3F9B';
-const REST_API_KEY = 'F728B349-E69E-4BAB-AA95-D80616238BE9';
+const APP_ID = '6A634821-CDBC-4B0E-92EF-73EB6D7A373A';
+const REST_API_KEY = '2FB1770E-4FBF-4928-B6CA-90232DF832C3';
 const BASE_URL = 'https://api.backendless.com';
 
 async function callBackendless(endpoint, method = 'GET', data = null) {
