@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart - PreshyBee Farms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fafafa; color: #1a1a1a; }
+        .top-bar { background: #111; color: #ccc; font-size: 12px; padding: 8px 20px; text-align: center; }
+        .top-bar span { color: #d4af37; font-weight: 500; }
+        nav { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid #e0e0e0; padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        nav .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #111; cursor: pointer; }
+        nav .logo span { font-weight: 400; color: #d4af37; }
+        nav .nav-links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+        nav .nav-links a { text-decoration: none; color: #555; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.3s; text-transform: uppercase; cursor: pointer; }
+        nav .nav-links a:hover, nav .nav-links a.active { color: #d4af37; }
+        nav .cta-nav { background: #d4af37; color: #111; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; transition: all 0.3s; }
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; text-align: center; color: #111; margin-bottom: 5px; }
+        .section-subtitle { text-align: center; color: #777; font-size: 14px; margin-bottom: 30px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; border-radius: 12px; margin-bottom: 12px; border: 1px solid #eee; }
+        .cart-item .info h4 { font-size: 16px; }
+        .cart-item .info p { font-size: 13px; color: #999; }
+        .cart-item .qty { display: flex; align-items: center; gap: 12px; }
+        .cart-item .qty button { background: #f0f0f0; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 18px; cursor: pointer; }
+        .cart-item .qty button:hover { background: #ddd; }
+        .cart-item .remove { background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .cart-total { text-align: right; font-size: 24px; font-weight: 700; padding: 20px 0; border-top: 2px solid #eee; margin-top: 10px; }
+        .checkout-btn { background: #d4af37; color: #111; border: none; padding: 14px 40px; border-radius: 10px; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
+        .checkout-btn:hover { background: #b8960f; }
+        .empty-cart { text-align: center; padding: 60px 20px; color: #999; }
+        .empty-cart .emoji { font-size: 64px; display: block; margin-bottom: 16px; }
+        .empty-cart a { color: #d4af37; text-decoration: none; font-weight: 600; }
+        .footer { background: #111; color: #777; padding: 40px 20px 20px; text-align: center; margin-top: 40px; }
+        .footer .footer-brand { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: white; margin-bottom: 4px; }
+        .footer .footer-brand span { font-weight: 400; color: #d4af37; }
+        .footer-links { display: flex; justify-content: center; gap: 20px; margin: 15px 0; flex-wrap: wrap; }
+        .footer-links a { color: #aaa; text-decoration: none; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .footer-links a:hover { color: #d4af37; }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; z-index: 999; background: #25d366; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.4); transition: all 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        #toast { position: fixed; bottom: 90px; right: 20px; background: #111; color: #d4af37; padding: 12px 20px; border-radius: 8px; font-size: 13px; display: none; z-index: 999; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .cart-count { background: #d4af37; color: #111; border-radius: 50%; padding: 1px 8px; font-size: 11px; font-weight: 700; margin-left: 4px; }
+        @media (max-width: 640px) { .container { padding: 0 15px; } .cart-item { flex-wrap: wrap; gap: 10px; } .cart-item .qty { margin-left: auto; } }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">📍 Isolo, Lagos &nbsp;|&nbsp; 📧 preshybeefarms@gmail.com &nbsp;|&nbsp; 📞 <span>+234 807 393 8083</span></div>
+
+    <nav>
+        <div class="logo" onclick="window.location.href='index.html'">PreshyBee<span>Farms</span></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="shopping-cart.html" class="active">🛒 Cart <span class="cart-count" id="cartCount">0</span></a>
+            <a href="sponsor.html">🎁 Sponsor</a>
+            <a href="login.html">Login</a>
+        </div>
+        <a href="https://wa.me/2348073938083" class="cta-nav">Order Now</a>
+    </nav>
+
+    <div class="container">
+        <h1 class="section-title">🛒 Your Shopping Cart</h1>
+        <p class="section-subtitle">Review your items and proceed to checkout.</p>
+        <div id="cartContent"></div>
+    </div>
+
+    <footer>
+        <div class="footer-brand">PreshyBee<span>Farms</span></div>
+        <p>Premium Agriculture. Affordable Protein.</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="shopping-cart.html">Cart</a>
+            <a href="sponsor.html">Sponsor</a>
+            <a href="login.html">Login</a>
+        </div>
+        <p style="font-size:12px; color:#555;">📍 Isolo, Lagos, Nigeria &nbsp;|&nbsp; 📧 preshybeefarms@gmail.com &nbsp;|&nbsp; 📞 +234 807 393 8083</p>
+        <p class="copyright">&copy; 2026 PreshyBee Farms Group. All Rights Reserved.</p>
+    </footer>
+
+    <a href="https://wa.me/2348073938083" class="whatsapp-float" target="_blank">💬</a>
+    <div id="toast"></div>
+
+    <script>
+        // ===== SHOPPING CART =====
+        function getCart() {
+            try { return JSON.parse(localStorage.getItem('preshybeecart')) || []; } catch(e) { return []; }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('preshybeecart', JSON.stringify(cart));
+        }
+
+        function updateCartCount() {
+            var cart = getCart();
+            var el = document.getElementById('cartCount');
+            if (el) el.textContent = cart.length;
+        }
+
+        function showToast(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.display = 'block';
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(function() { t.style.display = 'none'; }, 3000);
+        }
+
+        function renderCart() {
+            var container = document.getElementById('cartContent');
+            var cart = getCart();
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <span class="emoji">🛒</span>
+                        <h2>Your shopping cart is empty</h2>
+                        <p>Go to the <a href="products.html">Shop</a> to add items.</p>
+                    </div>
+                `;
+                updateCartCount();
+                return;
+            }
+
+            // Count items
+            var items = {};
+            cart.forEach(function(item) {
+                items[item] = (items[item] || 0) + 1;
+            });
+
+            var html = '';
+            var total = 0;
+            var productPrices = {
+                'Fresh Eggs': 4900,
+                'Broilers': 0,
+                'Turkey': 0,
+                'Ducks': 0,
+                'Organic Manure': 2000,
+                'Snails': 0,
+                'Goats & Rams': 0,
+                'Pigs': 0,
+                'Bell Peppers': 0,
+                'Yams': 0
+            };
+
+            for (var name in items) {
+                var qty = items[name];
+                var price = productPrices[name] || 0;
+                var subtotal = price * qty;
+                total += subtotal;
+                var priceDisplay = price === 0 ? 'Enquire' : '₦' + price.toLocaleString();
+                html += `
+                    <div class="cart-item">
+                        <div class="info">
+                            <h4>${name}</h4>
+                            <p>${priceDisplay} × ${qty}</p>
+                        </div>
+                        <div class="qty">
+                            <button onclick="updateQty('${name}', -1)">−</button>
+                            <span>${qty}</span>
+                            <button onclick="updateQty('${name}', 1)">+</button>
+                            <button class="remove" onclick="removeItem('${name}')">Remove</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            var totalDisplay = total === 0 ? 'Enquire' : '₦' + total.toLocaleString();
+            html += `
+                <div class="cart-total">Total: ${totalDisplay}</div>
+                <div style="text-align:right;">
+                    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+                </div>
+            `;
+            container.innerHTML = html;
+            updateCartCount();
+        }
+
+        function updateQty(name, delta) {
+            var cart = getCart();
+            var index = cart.indexOf(name);
+            if (index === -1) return;
+            if (delta === -1) {
+                cart.splice(index, 1);
+            } else {
+                cart.push(name);
+            }
+            saveCart(cart);
+            renderCart();
+        }
+
+        function removeItem(name) {
+            var cart = getCart();
+            var newCart = cart.filter(function(item) { return item !== name; });
+            saveCart(newCart);
+            renderCart();
+            showToast('Removed ' + name + ' from cart.');
+        }
+
+        function checkout() {
+            var cart = getCart();
+            if (cart.length === 0) {
+                showToast('Your cart is empty!');
+                return;
+            }
+            var items = cart.join(', ');
+            var msg = 'Hello PreshyBee Farms! I\'d like to order: ' + items + '. Please provide pricing and delivery options.';
+            window.location.href = 'https://wa.me/2348073938083?text=' + encodeURIComponent(msg);
+        }
+
+        renderCart();
+    </script>
+</body>
+</html>
