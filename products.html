@@ -43,9 +43,7 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 50px 25px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; }
         .product-card { background: #fff; border-radius: 16px; padding: 25px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); border: 1px solid #f0f0f0; position: relative; overflow: hidden; }
-        .product-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #d4af37, #f5d77b); opacity: 0; transition: opacity 0.4s; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); border-color: #d4af37; }
-        .product-card:hover::before { opacity: 1; }
         .product-card .emoji { font-size: 48px; margin-bottom: 8px; display: block; }
         .product-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: #111; margin-bottom: 2px; }
         .product-card .price { font-size: 20px; font-weight: 700; color: #d4af37; }
@@ -296,14 +294,19 @@
 
                 grid.innerHTML = '';
                 products.forEach(function(p) {
+                    // Support both 'name' and 'Name' column names
+                    var productName = p.name || p.Name || 'Unknown';
+                    var productCategory = p.category || p.Category || '';
                     var priceDisplay = (p.price === 0 || !p.price) ? 'Enquire' : '₦' + Number(p.price).toLocaleString();
+                    var unitDisplay = p.unit || p.Unit || 'item';
+
                     var card = document.createElement('div');
                     card.className = 'product-card';
                     card.innerHTML = `
-                        <span class="emoji">${getEmoji(p.category)}</span>
-                        <h3>${p.name}</h3>
+                        <span class="emoji">${getEmoji(productCategory)}</span>
+                        <h3>${productName}</h3>
                         <div class="price">${priceDisplay}</div>
-                        <div class="unit">per ${p.unit || 'item'}</div>
+                        <div class="unit">per ${unitDisplay}</div>
                         <div class="qty-control">
                             <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
                             <span class="qty-number">0</span>
@@ -314,7 +317,6 @@
                     grid.appendChild(card);
                 });
 
-                // Update cart actions after loading
                 updateCartActions();
 
             } catch(error) {
