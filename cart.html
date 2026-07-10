@@ -3,237 +3,351 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Cart - PreshyBee Farms</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <title>Donation Cart - PreshyBee Farms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .cart-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .cart-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        }
-        .cart-table th {
-            background: #1a3a1a;
-            color: #fff;
-            padding: 14px;
-            text-align: left;
-        }
-        .cart-table td {
-            padding: 14px;
-            border-bottom: 1px solid #eee;
-            vertical-align: middle;
-        }
-        .cart-table tr:last-child td {
-            border-bottom: none;
-        }
-        .quantity-btn {
-            background: #f0f0f0;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            font-size: 18px;
-            cursor: pointer;
-            font-weight: 700;
-        }
-        .quantity-btn:hover {
-            background: #ddd;
-        }
-        .remove-btn {
-            background: #e74c3c;
-            color: #fff;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .remove-btn:hover {
-            background: #c0392b;
-        }
-        .cart-total {
-            text-align: right;
-            font-size: 24px;
-            font-weight: 700;
-            padding: 20px 0;
-        }
-        .checkout-btn {
-            background: #2d7d2d;
-            color: #fff;
-            border: none;
-            padding: 14px 40px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .checkout-btn:hover {
-            background: #1e5e1e;
-        }
-        .empty-cart {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-        .empty-cart .emoji {
-            font-size: 64px;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 40px;
-            background: #1a3a1a;
-            color: #fff;
-        }
-        .navbar a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 20px;
-        }
-        .navbar .logo {
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .cart-count {
-            background: #e74c3c;
-            color: #fff;
-            border-radius: 50%;
-            padding: 2px 10px;
-            font-size: 14px;
-            margin-left: 6px;
-        }
-        #toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #2d7d2d;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 8px;
-            display: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 999;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fafafa; color: #1a1a1a; }
+        .top-bar { background: #111; color: #ccc; font-size: 12px; padding: 8px 20px; text-align: center; }
+        .top-bar span { color: #d4af37; font-weight: 500; }
+        nav { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid #e0e0e0; padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        nav .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #111; cursor: pointer; }
+        nav .logo span { font-weight: 400; color: #d4af37; }
+        nav .nav-links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+        nav .nav-links a { text-decoration: none; color: #555; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.3s; text-transform: uppercase; cursor: pointer; }
+        nav .nav-links a:hover, nav .nav-links a.active { color: #d4af37; }
+        nav .cta-nav { background: #d4af37; color: #111; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; transition: all 0.3s; }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; text-align: center; color: #111; margin-bottom: 5px; }
+        .section-subtitle { text-align: center; color: #777; font-size: 14px; margin-bottom: 30px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; border-radius: 12px; margin-bottom: 12px; border: 1px solid #eee; }
+        .cart-item .info h4 { font-size: 16px; }
+        .cart-item .info p { font-size: 13px; color: #999; }
+        .cart-item .qty { display: flex; align-items: center; gap: 12px; }
+        .cart-item .qty button { background: #f0f0f0; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 18px; cursor: pointer; }
+        .cart-item .qty button:hover { background: #ddd; }
+        .cart-item .remove { background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .cart-total { text-align: right; font-size: 24px; font-weight: 700; padding: 20px 0; border-top: 2px solid #eee; margin-top: 10px; }
+        .donor-form { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; margin-top: 30px; }
+        .donor-form h2 { font-family: 'Playfair Display', serif; margin-bottom: 5px; text-align: center; }
+        .donor-form .form-subtitle { text-align: center; color: #999; font-size: 14px; margin-bottom: 20px; }
+        .donor-form label { display: block; font-weight: 600; margin-bottom: 5px; margin-top: 15px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #333; }
+        .donor-form input, .donor-form select, .donor-form textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 10px; font-size: 14px; transition: border 0.3s; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .donor-form input:focus, .donor-form select:focus, .donor-form textarea:focus { border-color: #d4af37; outline: none; }
+        .donor-form .btn-submit { background: #d4af37; color: #111; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px; width: 100%; transition: all 0.3s; }
+        .donor-form .btn-submit:hover { background: #b8960f; }
+        .donor-form .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
+        .recipient-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 10px 0; }
+        .recipient-options label { padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s; font-weight: normal; text-transform: none; margin-top: 0; }
+        .recipient-options input[type="radio"] { display: none; }
+        .recipient-options input[type="radio"]:checked + label { border-color: #d4af37; background: #f5f0eb; }
+        .recipient-options label:hover { border-color: #d4af37; }
+        .recipient-details { background: #f8f8f8; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; }
+        .recipient-details.show { display: block; }
+        .empty-cart { text-align: center; padding: 60px 20px; color: #999; }
+        .empty-cart .emoji { font-size: 64px; display: block; margin-bottom: 16px; }
+        .empty-cart a { color: #d4af37; text-decoration: none; font-weight: 600; }
+        .success-message { background: #e8f5e9; border-radius: 12px; padding: 30px; text-align: center; margin-top: 30px; display: none; }
+        .success-message h2 { color: #1b5e20; margin-bottom: 10px; }
+        .success-message p { color: #2d5a2d; }
+        .footer { background: #111; color: #777; padding: 40px 20px 20px; text-align: center; margin-top: 40px; }
+        .footer .footer-brand { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: white; margin-bottom: 4px; }
+        .footer .footer-brand span { font-weight: 400; color: #d4af37; }
+        .footer-links { display: flex; justify-content: center; gap: 20px; margin: 15px 0; flex-wrap: wrap; }
+        .footer-links a { color: #aaa; text-decoration: none; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .footer-links a:hover { color: #d4af37; }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; z-index: 999; background: #25d366; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.4); transition: all 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        #toast { position: fixed; bottom: 90px; right: 20px; background: #111; color: #d4af37; padding: 12px 20px; border-radius: 8px; font-size: 13px; display: none; z-index: 999; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .cart-count { background: #d4af37; color: #111; border-radius: 50%; padding: 1px 8px; font-size: 11px; font-weight: 700; margin-left: 4px; }
+        @media (max-width: 640px) { .container { padding: 0 15px; } .donor-form { padding: 20px; } .recipient-options { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="/" class="logo">🐝 PreshyBee Farms</a>
-        <div>
+
+    <div class="top-bar">📍 Isolo, Lagos &nbsp;|&nbsp; 📧 preshybeefarms@gmail.com &nbsp;|&nbsp; 📞 <span>+234 807 393 8083</span></div>
+
+    <nav>
+        <div class="logo" onclick="window.location.href='/'">PreshyBee<span>Farms</span></div>
+        <div class="nav-links">
+            <a href="/">Home</a>
             <a href="/products.html">Shop</a>
-            <a href="/donate/">Donate</a>
-            <a href="/cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
+            <a href="/cart.html" class="active">Cart <span class="cart-count" id="cartCount">0</span></a>
+            <a href="/sponsor.html">🎁 Sponsor</a>
             <a href="/login.html">Login</a>
         </div>
+        <a href="https://wa.me/2348073938083" class="cta-nav">Order Now</a>
     </nav>
 
-    <div class="cart-container">
-        <h1>Your Cart</h1>
-        <div id="cartContent">
-            <p style="text-align:center;padding:40px;">Loading your cart...</p>
-        </div>
+    <div class="container">
+        <h1 class="section-title">🎁 Your Donation Cart</h1>
+        <p class="section-subtitle">Review your donations and complete the form below.</p>
+        <div id="cartContent"></div>
     </div>
 
+    <footer>
+        <div class="footer-brand">PreshyBee<span>Farms</span></div>
+        <p>Premium Agriculture. Affordable Protein.</p>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="/products.html">Shop</a>
+            <a href="/sponsor.html">Sponsor</a>
+            <a href="/login.html">Login</a>
+        </div>
+        <p style="font-size:12px; color:#555;">📍 Isolo, Lagos, Nigeria &nbsp;|&nbsp; 📧 preshybeefarms@gmail.com &nbsp;|&nbsp; 📞 +234 807 393 8083</p>
+        <p class="copyright">&copy; 2026 PreshyBee Farms Group. All Rights Reserved.</p>
+    </footer>
+
+    <a href="https://wa.me/2348073938083" class="whatsapp-float" target="_blank">💬</a>
     <div id="toast"></div>
 
+    <script src="js/backendless-client.js"></script>
     <script>
-        // ===== CART USING LOCALSTORAGE =====
-        var cart = JSON.parse(localStorage.getItem('preshybeecart')) || [];
+        // ===== DONATION CART FUNCTIONS =====
+        function getDonationCart() {
+            try { return JSON.parse(localStorage.getItem('donationCart')) || []; } catch(e) { return []; }
+        }
 
-        function updateCartDisplay() {
+        function saveDonationCart(cart) { localStorage.setItem('donationCart', JSON.stringify(cart)); }
+
+        function updateCartCount() {
+            var cart = getDonationCart();
+            var total = cart.reduce(function(sum, item) { return sum + item.quantity; }, 0);
+            var el = document.getElementById('cartCount');
+            if (el) el.textContent = total;
+        }
+
+        function showToast(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.display = 'block';
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(function() { t.style.display = 'none'; }, 3000);
+        }
+
+        // ===== RENDER CART =====
+        function renderCart() {
             var container = document.getElementById('cartContent');
-            var countEl = document.getElementById('cartCount');
-            if (countEl) countEl.textContent = cart.length;
+            var cart = getDonationCart();
 
             if (cart.length === 0) {
                 container.innerHTML = `
                     <div class="empty-cart">
-                        <div class="emoji">🛒</div>
-                        <h2>Your cart is empty</h2>
-                        <p>Start shopping at <a href="/products.html" style="color:#2d7d2d;">our farm shop</a>!</p>
+                        <span class="emoji">🛒</span>
+                        <h2>Your donation cart is empty</h2>
+                        <p>Go to the <a href="/sponsor.html">Sponsor page</a> to add animals.</p>
                     </div>
                 `;
+                updateCartCount();
                 return;
             }
 
-            // Count items
-            var items = {};
-            cart.forEach(function(item) {
-                items[item] = (items[item] || 0) + 1;
+            var html = '';
+            var total = 0;
+
+            cart.forEach(function(item, index) {
+                var subtotal = item.price * item.quantity;
+                total += subtotal;
+                html += `
+                    <div class="cart-item">
+                        <div class="info">
+                            <h4>${item.animal}</h4>
+                            <p>₦${item.price.toLocaleString()} × ${item.quantity}</p>
+                        </div>
+                        <div class="qty">
+                            <button onclick="updateQty(${index}, -1)">−</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQty(${index}, 1)">+</button>
+                            <button class="remove" onclick="removeItem(${index})">Remove</button>
+                        </div>
+                    </div>
+                `;
             });
 
-            var html = `
-                <table class="cart-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            var total = 0;
-            for (var name in items) {
-                var qty = items[name];
-                total += qty;
-                html += `
-                    <tr>
-                        <td><strong>${name}</strong></td>
-                        <td>${qty}</td>
-                        <td><button class="remove-btn" onclick="removeItem('${name}')">Remove</button></td>
-                    </tr>
-                `;
-            }
             html += `
-                    </tbody>
-                </table>
-                <div class="cart-total">
-                    Total items: ${total}
-                </div>
-                <div style="text-align:right;">
-                    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+                <div class="cart-total">Total: ₦${total.toLocaleString()}</div>
+                <div style="text-align:right; margin-top:10px;">
+                    <button onclick="clearCart()" style="background:#e74c3c; color:#fff; border:none; padding:8px 20px; border-radius:6px; cursor:pointer; font-size:13px;">Clear Cart</button>
                 </div>
             `;
+
+            html += getDonorFormHTML();
             container.innerHTML = html;
+            updateCartCount();
+            setupFormListeners();
         }
 
-        function removeItem(name) {
-            var index = cart.indexOf(name);
-            if (index !== -1) cart.splice(index, 1);
-            localStorage.setItem('preshybeecart', JSON.stringify(cart));
-            updateCartDisplay();
-            showToast('Removed ' + name + ' from cart');
+        // ===== DONOR FORM HTML =====
+        function getDonorFormHTML() {
+            return `
+                <div class="donor-form">
+                    <h2>Donor Details</h2>
+                    <p class="form-subtitle">Fill in your details and who you want to gift to.</p>
+                    <form id="donationForm">
+                        <label>Your Full Name</label>
+                        <input type="text" id="donorName" placeholder="e.g. Chidi Okonkwo" required />
+
+                        <label>Your Email</label>
+                        <input type="email" id="donorEmail" placeholder="you@example.com" required />
+
+                        <label>Your Phone Number</label>
+                        <input type="tel" id="donorPhone" placeholder="080 1234 5678" required />
+
+                        <label>Who are you donating to?</label>
+                        <div class="recipient-options">
+                            <input type="radio" name="recipientType" id="recipientFamily" value="Family" />
+                            <label for="recipientFamily">👨‍👩‍👧‍👦 Family</label>
+                            <input type="radio" name="recipientType" id="recipientFriends" value="Friends" />
+                            <label for="recipientFriends">🤝 Friends</label>
+                            <input type="radio" name="recipientType" id="recipientOrphanage" value="Orphanage" />
+                            <label for="recipientOrphanage">🏠 Orphanage</label>
+                            <input type="radio" name="recipientType" id="recipientCommunity" value="Community" />
+                            <label for="recipientCommunity">🌍 Community</label>
+                            <input type="radio" name="recipientType" id="recipientOther" value="Other" />
+                            <label for="recipientOther">📝 Other</label>
+                        </div>
+
+                        <div class="recipient-details" id="recipientDetails">
+                            <h3 style="font-size:16px; margin-bottom:10px;">Recipient Details</h3>
+                            <label>Recipient's Name</label>
+                            <input type="text" id="recipientName" placeholder="e.g. Mrs. Adeola" />
+                            <label>Recipient's Phone</label>
+                            <input type="tel" id="recipientPhone" placeholder="080 1234 5678" />
+                            <label>Recipient's Location</label>
+                            <input type="text" id="recipientLocation" placeholder="e.g. Isolo, Lagos" />
+                            <label>Your Message (Optional)</label>
+                            <textarea id="donorMessage" rows="3" placeholder="Write a personal message to the recipient..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="submitBtn">🎁 Complete Donation</button>
+                    </form>
+                    <div id="formMessage" style="margin-top:16px; display:none;"></div>
+                </div>
+            `;
         }
 
-        function checkout() {
-            if (cart.length === 0) {
-                showToast('Your cart is empty!');
+        // ===== FORM LISTENERS =====
+        function setupFormListeners() {
+            var radios = document.querySelectorAll('input[name="recipientType"]');
+            var details = document.getElementById('recipientDetails');
+
+            radios.forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    if (this.checked) {
+                        details.classList.add('show');
+                    }
+                });
+            });
+
+            document.getElementById('donationForm').addEventListener('submit', handleFormSubmit);
+        }
+
+        // ===== HANDLE FORM SUBMIT =====
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            var donorName = document.getElementById('donorName').value.trim();
+            var donorEmail = document.getElementById('donorEmail').value.trim();
+            var donorPhone = document.getElementById('donorPhone').value.trim();
+            var recipientType = document.querySelector('input[name="recipientType"]:checked');
+            var recipientName = document.getElementById('recipientName').value.trim();
+            var recipientPhone = document.getElementById('recipientPhone').value.trim();
+            var recipientLocation = document.getElementById('recipientLocation').value.trim();
+            var donorMessage = document.getElementById('donorMessage').value.trim();
+            var submitBtn = document.getElementById('submitBtn');
+
+            if (!donorName || !donorEmail || !donorPhone) {
+                showToast('Please fill in your donor details.');
                 return;
             }
-            var items = cart.join(', ');
-            var msg = 'Hello PreshyBee Farms! I\'d like to order: ' + items + '. Please provide pricing and delivery options.';
-            window.location.href = 'https://wa.me/2348073938083?text=' + encodeURIComponent(msg);
+
+            if (!recipientType) {
+                showToast('Please select who you are donating to.');
+                return;
+            }
+
+            if (!recipientName || !recipientPhone || !recipientLocation) {
+                showToast('Please fill in the recipient details.');
+                return;
+            }
+
+            var cart = getDonationCart();
+            if (cart.length === 0) {
+                showToast('Your cart is empty. Add some animals first.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            var donationData = {
+                donor_name: donorName,
+                donor_email: donorEmail,
+                donor_phone: donorPhone,
+                recipient_type: recipientType.value,
+                recipient_name: recipientName,
+                recipient_phone: recipientPhone,
+                recipient_location: recipientLocation,
+                message: donorMessage || '',
+                animals: cart,
+                total: cart.reduce(function(sum, item) { return sum + (item.price * item.quantity); }, 0),
+                status: 'Pending',
+                created_at: new Date().toISOString()
+            };
+
+            try {
+                var result = await callBackendless('data/Donations', 'POST', donationData);
+                localStorage.removeItem('donationCart');
+                document.getElementById('donationForm').style.display = 'none';
+                var msgDiv = document.getElementById('formMessage');
+                msgDiv.innerHTML = `
+                    <div class="success-message" style="display:block;">
+                        <h2>🎉 Thank You, ${donorName}!</h2>
+                        <p>Your donation of <strong>${cart.length} animal(s)</strong> has been recorded.</p>
+                        <p>We will deliver to <strong>${recipientName}</strong> at <strong>${recipientLocation}</strong>.</p>
+                        <p style="margin-top:10px; color:#1b5e20;">🙏 God bless you for your generosity!</p>
+                    </div>
+                `;
+                msgDiv.style.display = 'block';
+                updateCartCount();
+                renderCart();
+            } catch (error) {
+                showToast('Error: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🎁 Complete Donation';
+            }
         }
 
-        function showToast(message) {
-            var toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.display = 'block';
-            setTimeout(function() { toast.style.display = 'none'; }, 3000);
+        // ===== CART ACTIONS =====
+        function updateQty(index, delta) {
+            var cart = getDonationCart();
+            if (!cart[index]) return;
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            saveDonationCart(cart);
+            renderCart();
         }
 
-        // Load cart on page load
-        updateCartDisplay();
+        function removeItem(index) {
+            var cart = getDonationCart();
+            cart.splice(index, 1);
+            saveDonationCart(cart);
+            renderCart();
+            showToast('Item removed from cart.');
+        }
+
+        function clearCart() {
+            if (confirm('Clear your donation cart?')) {
+                saveDonationCart([]);
+                renderCart();
+                showToast('Cart cleared.');
+            }
+        }
+
+        // ===== INIT =====
+        renderCart();
     </script>
 </body>
 </html>
