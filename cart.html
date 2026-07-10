@@ -68,13 +68,13 @@
     <div class="top-bar">📍 Isolo, Lagos &nbsp;|&nbsp; 📧 preshybeefarms@gmail.com &nbsp;|&nbsp; 📞 <span>+234 807 393 8083</span></div>
 
     <nav>
-        <div class="logo" onclick="window.location.href='/hello-world/'">PreshyBee<span>Farms</span></div>
+        <div class="logo" onclick="window.location.href='index.html'">PreshyBee<span>Farms</span></div>
         <div class="nav-links">
-            <a href="/hello-world/">Home</a>
-            <a href="/hello-world/products.html">Shop</a>
-            <a href="/hello-world/cart.html" class="active">Cart <span class="cart-count" id="cartCount">0</span></a>
-            <a href="/hello-world/sponsor.html">🎁 Sponsor</a>
-            <a href="/hello-world/login.html">Login</a>
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="cart.html" class="active">🎁 Donation Cart</a>
+            <a href="sponsor.html">🎁 Sponsor</a>
+            <a href="login.html">Login</a>
         </div>
         <a href="https://wa.me/2348073938083" class="cta-nav">Order Now</a>
     </nav>
@@ -89,10 +89,11 @@
         <div class="footer-brand">PreshyBee<span>Farms</span></div>
         <p>Premium Agriculture. Affordable Protein.</p>
         <div class="footer-links">
-            <a href="/hello-world/">Home</a>
-            <a href="/hello-world/products.html">Shop</a>
-            <a href="/hello-world/sponsor.html">Sponsor</a>
-            <a href="/hello-world/login.html">Login</a>
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="cart.html">Donation Cart</a>
+            <a href="sponsor.html">Sponsor</a>
+            <a href="login.html">Login</a>
         </div>
         <p style="font-size:12px; color:#555;">📍 Isolo, Lagos, Nigeria &nbsp;|&nbsp; 📧 preshybeefarms@gmail.com &nbsp;|&nbsp; 📞 +234 807 393 8083</p>
         <p class="copyright">&copy; 2026 PreshyBee Farms Group. All Rights Reserved.</p>
@@ -135,9 +136,9 @@
             if (cart.length === 0) {
                 container.innerHTML = `
                     <div class="empty-cart">
-                        <span class="emoji">🛒</span>
+                        <span class="emoji">🎁</span>
                         <h2>Your donation cart is empty</h2>
-                        <p>Go to the <a href="/hello-world/sponsor.html">Sponsor page</a> to add animals.</p>
+                        <p>Go to the <a href="sponsor.html">Sponsor page</a> to add animals.</p>
                     </div>
                 `;
                 updateCartCount();
@@ -282,7 +283,6 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
 
-            // Build animal details string
             var animalDetails = cart.map(function(item) {
                 return item.quantity + ' × ' + item.animal + ' (₦' + item.price.toLocaleString() + ' each)';
             }).join(', ');
@@ -306,11 +306,9 @@
             };
 
             try {
-                // 1. Save to Backendless
                 var result = await callBackendless('data/Donations', 'POST', donationData);
                 console.log('Donation saved:', result);
 
-                // 2. Send Donor Email
                 var donorEmailResult = await sendDonorEmail(donationData);
                 if (donorEmailResult.success) {
                     console.log('Donor email sent successfully!');
@@ -318,7 +316,6 @@
                     console.error('Donor email failed:', donorEmailResult.error);
                 }
 
-                // 3. Send Recipient Email
                 var recipientEmailResult = await sendRecipientEmail(donationData);
                 if (recipientEmailResult.success) {
                     console.log('Recipient email sent successfully!');
@@ -326,7 +323,6 @@
                     console.error('Recipient email failed:', recipientEmailResult.error);
                 }
 
-                // 4. Clear cart and show success
                 localStorage.removeItem('donationCart');
                 document.getElementById('donationForm').style.display = 'none';
                 var msgDiv = document.getElementById('formMessage');
